@@ -1,6 +1,7 @@
 let currentPlayer="X";
 let gameOver=false; 
 let vsComputer=false;
+let vsComputer1=false;
 let xScore = 0;
 let oScore = 0;
 
@@ -11,6 +12,9 @@ const turnText=document.getElementById("turnText");
 const resetBtn=document.getElementById("resetBtn");
 const playWithComputer=document.getElementById("playWithComputer");
 const resetScoreBtn = document.getElementById("resetScoreBtn");
+const level= document.getElementById("level");
+const level1= document.getElementById("level1");
+const level2= document.getElementById("level2");
 
 // Winning Combinations
 const winningPatterns=[
@@ -81,10 +85,25 @@ function checkWinner() {
     "shadow-lg",
    "animate-pulse"
   );
-    return;
-    }
+  return;
+  }
   }
 } 
+
+// Draw condition
+function checkDraw() {
+    let isDraw = true;
+    boxes.forEach((box) => {
+        if (box.innerText === "") {
+            isDraw = false;
+        }
+    });
+
+    if (isDraw && !gameOver) {
+        gameOver = true;
+            turnText.innerText=`It's a draw!`;
+        }
+    } 
 
 // Computer move
 function computerMove() {
@@ -109,9 +128,91 @@ function computerMove() {
     
 } 
 
+// Hard level
+function computerMove1() {
+
+  // 1. Try to win
+  let move = findBestMove("O");
+
+  // 2. Block player win
+  if (move === -1) {
+    move = findBestMove("X");
+  }
+
+  // 3. Take center
+  if (move === -1 && boxes[4].innerText === "") {
+    move = 4;
+  }
+
+  // 4. Take corners
+  if (move === -1) {
+    const corners = [0, 2, 6, 8];
+    for (let corner of corners) {
+        if (boxes[corner].innerText === "") {
+        move = corner;
+        break;
+      }
+    }
+}
+
+  // 5. Take any empty box
+  if (move === -1) {
+    for (let i = 0; i < boxes.length; i++) {
+        if (boxes[i].innerText === "") {
+        move = i;
+        break;
+      }
+    }
+} 
+
+  // Make move
+  if (move !== -1) {
+    boxes[move].innerText = "O";
+    }
+} 
+
+
+// Find winning/blocking move
+function findBestMove(player) {
+
+  for (let pattern of winningPatterns) {
+    let [a, b, c] = pattern;
+    let values = [
+      boxes[a].innerText,
+      boxes[b].innerText,
+      boxes[c].innerText
+    ];
+
+    // Count player's marks
+    let countPlayer =
+      values.filter(v => v === player).length;
+
+    let countEmpty =
+      values.filter(v => v === "").length;
+
+    // If 2 same + 1 empty
+    if (countPlayer === 2 && countEmpty === 1) {
+
+      if (boxes[a].innerText === "") return a;
+      if (boxes[b].innerText === "") return b;
+      if (boxes[c].innerText === "") return c;
+        }
+    }
+    return -1;
+} 
+
 // Click handling while playing with computer
 playWithComputer.addEventListener("click",()=>{
+    level.classList.remove("hidden");
+    level.classList.add("flex");
+}); 
+
+level1.addEventListener("click",()=>{
     vsComputer=true;
+});
+
+level2.addEventListener("click",()=>{
+    vsComputer1=true;
 });
 
 // Click handling default 
@@ -132,20 +233,34 @@ boxes.forEach((box)=>{
         // Check winner
         checkWinner();
         
+        
         // Switch player only if game continues
         if(!gameOver) {
             if(vsComputer){
                 computerMove();
                 checkWinner();
+                checkDraw();
                 if(gameOver) {
                 return;
                 }
             } 
+            else if(vsComputer1){
+                computerMove1();
+                checkWinner();
+                checkDraw();
+                if(gameOver) {
+                return;
+                }
+            }
             else if(currentPlayer==="X") { 
-            currentPlayer="O";
+                checkDraw();
+                if(gameOver) return;
+                currentPlayer="O";
             }
             else {
-            currentPlayer="X";
+                checkDraw();
+                if(gameOver) return;
+                currentPlayer="X";
         }
 
         // Update turn text
@@ -156,6 +271,7 @@ boxes.forEach((box)=>{
 
 // Reset game
 resetBtn.addEventListener("click",()=> {
+    level.classList.add("hidden");
     boxes.forEach((box)=>{
         box.innerText="";
         box.classList.remove(
@@ -168,6 +284,7 @@ resetBtn.addEventListener("click",()=> {
     currentPlayer="X";
     gameOver=false;
     vsComputer=false;
+    vsComputer1=false;
     turnText.innerText="Player X turn";
 }); 
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
-    <link rel="stylesheet" href="output.css"> 
+    <link rel="stylesheet" href="./output.css"> 
 </head>
 <body class="bg-gray-900 text-white flex justify-center items-center h-screen">
 
@@ -62,7 +62,7 @@
           </div>
 
           <!-- Reset Button -->
-        <div flex gap-6>
+        <div class="flex gap-4">
            <button id="resetBtn" class="flex-row gap-4 bg-blue-600 px-6 py-3 rounded-xl text-xl font-semibold hover:bg-blue-700 cursor-pointer">Reset Game</button>
 
            <!-- Reset Score -->
@@ -71,7 +71,10 @@
         </div> 
            <!-- Play with Computer -->
            <button id="playWithComputer" class="bg-blue-600 px-6 py-3 rounded-xl text-xl font-semibold  hover:bg-blue-700 cursor-pointer">Play with Computer</button> 
-
+        <div id="level" class="hidden gap-4">
+           <button id="level1" class=" bg-blue-600 px-6 py-3 rounded-xl text-xl font-semibold  hover:bg-blue-700 cursor-pointer">Easy</button> 
+           <button id="level2" class=" bg-blue-600 px-6 py-3 rounded-xl text-xl font-semibold  hover:bg-blue-700 cursor-pointer">Hard</button> 
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
