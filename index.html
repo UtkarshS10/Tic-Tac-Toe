@@ -15,20 +15,35 @@
          <h1 class="text-5xl font-bold">Tic Tac Toe</h1>
 
          <!-- Turn Text -->
-          <p id="turnText" class="text-2xl font-semibold">Player A Turn</p> 
+          <p id="turnText" class="text-2xl font-semibold">Player 1 Turn</p> 
 
           <!-- Scoreboard -->
-           <div class="flex gap-6 text-2xl font-bold">
-
-            <h2>
-            X : <span id="xScore">0</span>
-            </h2>
-
-            <h2>
-            O : <span id="oScore">0</span>
-            </h2>
-
+        <div class="flex gap-6 text-2xl font-bold items-center">
+        <div id="player1" class="flex gap-2 items-center">
+            <input 
+                type="text"
+                id="playerName1"
+                placeholder="Player 1"
+                class="border px-2 py-2 w-30 rounded-xl text-white text-lg"/> 
+                <span>:<span id="xScore">0</span></span>
             </div>
+        <div id="player2" class="flex gap-2 items-center">
+            <input 
+                type="text"
+                id="playerName2"
+                placeholder="Player 2"
+                class="border px-2 py-2 w-30 rounded-xl text-white text-lg"/>
+            <span>:<span id="oScore">0</span></span>
+        </div>
+        <div id="computer" class="hidden gap-2 items-center">
+            <input 
+                type="text"
+                id="computer"
+                placeholder="Computer"
+                class="border px-2 py-2 w-30 rounded-xl text-white text-lg"/> 
+                <span>:<span id="cScore">0</span></span>
+            </div>
+        </div>
 
          <!-- Game Board -->
           <div class="grid grid-cols-3 gap-3">
@@ -61,7 +76,10 @@
              <button class="box w-24 h-24 bg-gray-800 rounded-xl text-4xl font-bold hover:bg-gray-700 cursor-pointer"></button>
           </div>
 
-          <!-- Reset Button -->
+          <!-- Start Game -->
+            <button id="startGame" class="flex-row gap-4 bg-blue-600 px-6 py-3 rounded-xl text-xl font-semibold hover:bg-blue-700 cursor-pointer">Start Game</button>
+
+            <!-- Reset Button -->
         <div class="flex gap-4">
            <button id="resetBtn" class="flex-row gap-4 bg-blue-600 px-6 py-3 rounded-xl text-xl font-semibold hover:bg-blue-700 cursor-pointer">Reset Game</button>
 

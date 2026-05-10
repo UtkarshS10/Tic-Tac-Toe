@@ -1,12 +1,15 @@
 let currentPlayer="X";
+let clicked=false;
 let gameOver=false; 
 let vsComputer=false;
 let vsComputer1=false;
 let xScore = 0;
 let oScore = 0;
+let cScore = 0;
 
 const xScoreText = document.getElementById("xScore");
 const oScoreText = document.getElementById("oScore");
+const cScoreText = document.getElementById("cScore");
 const boxes=document.querySelectorAll(".box");
 const turnText=document.getElementById("turnText");
 const resetBtn=document.getElementById("resetBtn");
@@ -15,6 +18,12 @@ const resetScoreBtn = document.getElementById("resetScoreBtn");
 const level= document.getElementById("level");
 const level1= document.getElementById("level1");
 const level2= document.getElementById("level2");
+const startGame= document.getElementById("startGame");
+const playerName1 = document.getElementById("playerName1");
+const playerName2 = document.getElementById("playerName2");
+const player1 = document.getElementById("player1");
+const player2 = document.getElementById("player2");
+const computer = document.getElementById("computer");
 
 // Winning Combinations
 const winningPatterns=[
@@ -49,15 +58,25 @@ function checkWinner() {
         if(vsComputer && pos1!="X") {
            turnText.innerText=`You Lost!`;
         }
+        else if(vsComputer && pos1=="X"){
+        turnText.innerText = `Congratulations, ${playerName1.value} Wins!`; 
+        }
+        else if(!vsComputer && pos1!="X") {
+            turnText.innerText = `Congratulations, ${playerName2.value} Wins!`;
+        }
         else {
-    turnText.innerText = `Congratulations, Player ${pos1} Wins!`; 
-    };
+            turnText.innerText = `Congratulations, ${playerName1.value} Wins!`;
+        }
     gameOver = true;
 
      // Update score
     if (pos1 === "X") {
         xScore++;
         xScoreText.innerText = xScore;
+    }
+    else if ((vsComputer || vsComputer1) && pos1==="O") {
+        cScore++;
+        cScoreText.innerText = cScore;
     }
     else {
         oScore++;
@@ -199,12 +218,21 @@ function findBestMove(player) {
         }
     }
     return -1;
-} 
+}
+
+startGame.addEventListener("click",()=>{
+    clicked=true;
+    if(playerName1.value==="")
+    alert("Enter player's name");
+});
 
 // Click handling while playing with computer
 playWithComputer.addEventListener("click",()=>{
     level.classList.remove("hidden");
     level.classList.add("flex");
+    player2.classList.add("hidden");
+    player1.classList.add("items-center");
+    computer.classList.remove("hidden");
 }); 
 
 level1.addEventListener("click",()=>{
@@ -218,6 +246,12 @@ level2.addEventListener("click",()=>{
 // Click handling default 
 boxes.forEach((box)=>{
     box.addEventListener("click",()=>{
+
+        // Start game not clicked 
+        if(!clicked) {
+            alert("Click on Start Game");
+            return;
+        }
         // Stop if the game ends
         if(gameOver) {
             return;
@@ -229,7 +263,7 @@ boxes.forEach((box)=>{
         }
         // Put X or O
         box.innerText=currentPlayer;
-
+       
         // Check winner
         checkWinner();
         
@@ -264,7 +298,12 @@ boxes.forEach((box)=>{
         }
 
         // Update turn text
-        turnText.innerText=`Player ${currentPlayer} Turn`;
+        if(currentPlayer==="X") {
+        turnText.innerText=`${playerName1.value}'s Turn`;
+        }
+        else {
+            turnText.innerText=`${playerName2.value}'s Turn`;
+        }
     }
     });
 }); 
@@ -285,6 +324,7 @@ resetBtn.addEventListener("click",()=> {
     gameOver=false;
     vsComputer=false;
     vsComputer1=false;
+    clicked=false;
     turnText.innerText="Player X turn";
 }); 
 
